@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoyColectivo · Herramienta legal para la búsqueda inmediata</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter (legible) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== PALETA SERENA ===== */
+        :root {
+            --serene-primary: #2c6e49;      /* Verde bosque, calma, esperanza */
+            --serene-secondary: #4c9a8c;    /* Verde azulado, serenidad */
+            --serene-light: #f4f1e9;        /* Beige suave, fondo acogedor */
+            --serene-soft: #e8eae6;         /* Gris verdoso muy claro */
+            --serene-accent: #d4b5b0;       /* Rosa terroso, empatía */
+            --neutral-100: #faf9f7;
+            --neutral-200: #f0efeb;
+            --neutral-300: #e2dfd9;
+            --neutral-400: #b8b2aa;
+            --neutral-500: #9c948c;
+            --neutral-600: #6b625a;
+            --neutral-700: #4a4540;
+            --neutral-800: #2e2a27;
+            --neutral-900: #1e1b18;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--serene-light);
+            color: var(--neutral-800);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .navbar {
+            background-color: white !important;
+            box-shadow: 0 4px 20px rgba(44,110,73,0.08);
+            padding: 0.75rem 0;
+            border-bottom: 3px solid var(--serene-primary);
+        }
+
+        /* ===== NUEVO LOGO CON LA FRASE ===== */
+        .logo-mb {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
+            text-align: left;
+            color: var(--serene-primary);
+            background-color: var(--serene-soft);
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            margin-right: 1rem;
+            border-left: 6px solid var(--serene-secondary);
+        }
+        .logo-mb .primera-linea {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--neutral-600);
+        }
+        .logo-mb .segunda-linea {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--serene-primary);
+        }
+        .logo-mb .tercera-linea {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--serene-secondary);
+        }
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.6rem;
+            color: var(--neutral-900) !important;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: var(--neutral-700) !important;
+            margin: 0 0.25rem;
+            padding: 0.5rem 1rem !important;
+            border-radius: 30px;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background-color: var(--serene-soft);
+            color: var(--serene-primary) !important;
+        }
+
+        .btn {
+            font-weight: 600;
+            padding: 0.6rem 1.5rem;
+            border-radius: 40px;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--serene-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #1f5236;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(44,110,73,0.2);
+        }
+
+        .btn-secondary {
+            background-color: var(--serene-secondary);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #3a7a6f;
+            color: white;
+        }
+
+        .btn-neutral {
+            background-color: var(--neutral-200);
+            color: var(--neutral-800);
+        }
+
+        .btn-neutral:hover {
+            background-color: var(--neutral-300);
+            color: var(--neutral-900);
+        }
+
+        .card {
+            border: none;
+            border-radius: 24px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.02);
+            transition: all 0.3s;
+            background-color: white;
+            border-top: 5px solid transparent;
+        }
+
+        .card:hover {
+            box-shadow: 0 15px 35px rgba(44,110,73,0.06);
+            border-top: 5px solid var(--serene-primary);
+        }
+
+        .badge-sereno {
+            background-color: var(--serene-primary);
+            color: white;
+            font-weight: 600;
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .badge-light {
+            background-color: var(--serene-soft);
+            color: var(--neutral-700);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+        }
+
+        .section-title {
+            position: relative;
+            margin-bottom: 2rem;
+            font-weight: 700;
+            color: var(--neutral-900);
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 0;
+            width: 70px;
+            height: 5px;
+            background-color: var(--serene-primary);
+            border-radius: 3px;
+        }
+
+        .law-quote {
+            background-color: var(--serene-soft);
+            border-left: 8px solid var(--serene-secondary);
+            padding: 1.5rem;
+            border-radius: 12px;
+            font-style: normal;
+        }
+
+        .jurisprudencia-card {
+            background: linear-gradient(145deg, #ffffff, var(--serene-soft));
+            border: 2px dashed var(--serene-primary);
+            border-radius: 24px;
+            padding: 1.8rem;
+            margin: 2rem 0;
+        }
+
+        .footer {
+            background-color: white;
+            border-top: 3px solid var(--serene-primary);
+            color: var(--neutral-600);
+            padding: 3rem 0 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer h5 {
+            color: var(--neutral-800);
+            margin-bottom: 1.2rem;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .footer a {
+            color: var(--neutral-600);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer a:hover {
+            color: var(--serene-primary);
+            text-decoration: underline;
+        }
+
+        .colectivo-card {
+            background: linear-gradient(145deg, #ffffff, var(--serene-light));
+            border-radius: 28px;
+            padding: 2rem;
+            height: 100%;
+            border: 1px solid rgba(44,110,73,0.1);
+        }
+
+        .form-control, .form-select {
+            border-radius: 12px;
+            border: 1px solid var(--neutral-300);
+            padding: 0.75rem 1rem;
+            background-color: white;
+            transition: 0.2s;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--serene-primary);
+            box-shadow: 0 0 0 3px rgba(44,110,73,0.1);
+        }
+
+        .modal-content {
+            border-radius: 24px;
+            border: 2px solid var(--serene-secondary);
+        }
+
+        .preview-area {
+            background-color: var(--neutral-100);
+            border-radius: 16px;
+            padding: 1.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            border: 1px solid var(--neutral-300);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        @media (max-width: 768px) {
+            .navbar-brand {
+                font-size: 1.2rem;
+                flex-wrap: wrap;
+            }
+            .logo-mb {
+                margin-bottom: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ======= NAVBAR CON NUEVO LOGO ======= -->
+<nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <div class="logo-mb">
+                <div class="primera-linea">Ponce en la</div>
+                <div class="segunda-linea">¿QUIÉN SABE QUÉ HAY AQUÍ?</div>
+                <div class="tercera-linea">¿DÓNDE ESTÁN?</div>
+            </div>
+            SoyColectivo
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#inicio"><i class="fas fa-house me-1"></i>Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#herramienta-familias"><i class="fas fa-file-signature me-1"></i>Para familias</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#colectivos"><i class="fas fa-people-arrows me-1"></i>Colectivos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#recursos"><i class="fas fa-gavel me-1"></i>Recursos legales</a>
+                </li>
+                <li class="nav-item ms-lg-3">
+                    <span class="badge-sereno">
+                        <i class="fas fa-heart me-1"></i> #72HorasEsIlegal
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- ======= CONTENIDO PRINCIPAL ======= -->
+<main class="container py-5">
+
+    <!-- ======= HERO ======= -->
+    <section id="inicio" class="row align-items-center g-5 mb-5 pb-4">
+        <div class="col-lg-7">
+            <span class="badge-sereno mb-3 d-inline-block"><i class="fas fa-gavel me-1"></i> Ley General de Desaparición · Artículo 119</span>
+            <h1 class="display-4 fw-bold mb-4" style="color: var(--neutral-900);">Primeras horas: <br><span style="color: var(--serene-primary);">la diferencia entre la vida y la ausencia.</span></h1>
+            <p class="lead fs-4 mb-4 text-secondary">Las <strong>72 horas de espera son un mito ilegal</strong>. <strong style="color: var(--serene-primary);">SoyColectivo</strong> te brinda las herramientas jurídicas para exigir búsqueda inmediata ante cualquier autoridad en Jalisco y México.</p>
+            <div class="d-flex flex-wrap gap-3">
+                <a href="#herramienta-familias" class="btn btn-primary py-3 px-4"><i class="fas fa-file-pdf me-2"></i>Generar denuncia / amparo</a>
+                <a href="#colectivos" class="btn btn-secondary py-3 px-4"><i class="fas fa-people-line me-2"></i>Recursos para colectivos</a>
+            </div>
+            <p class="mt-4 small text-secondary"><i class="fas fa-circle-info me-1"></i> Sin costo, sin registro. Información basada en los Protocolos Homologados de Búsqueda.</p>
+        </div>
+        <div class="col-lg-5">
+            <div class="card p-4 bg-white border-0 shadow-sm" style="border-top: 5px solid var(--serene-primary);">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="fas fa-circle-exclamation fs-1 me-3" style="color: var(--serene-primary);"></i>
+                    <div>
+                        <h3 class="h5 fw-bold mb-1">¿Por qué es urgente?</h3>
+                        <p class="mb-0 small">El 80% de las personas localizadas con vida se encuentran en las primeras 48 horas.</p>
+                    </div>
+                </div>
+                <hr class="my-3">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-check-circle fs-1 me-3" style="color: var(--serene-secondary);"></i>
+                    <div>
+                        <h3 class="h5 fw-bold mb-1">Documento legalmente válido</h3>
+                        <p class="mb-0 small">Cita artículos de la Ley General, Protocolo Homologado y Jurisprudencia obligatoria.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======= GENERADOR DE DENUNCIAS ======= -->
+    <section id="herramienta-familias" class="py-5">
+        <div class="d-flex align-items-center gap-3 mb-4">
+            <h2 class="section-title h1 fw-semibold" style="margin-bottom: 1.5rem;"><i class="fas fa-file-lines me-3" style="color: var(--serene-primary);"></i>Generador de denuncia / amparo</h2>
+            <span class="badge-sereno">uso exclusivo para familias</span>
+        </div>
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card p-4">
+                    <form id="disappearanceForm" class="row g-4">
+                        <!-- Datos del denunciante -->
+                        <h3 class="h5 fw-bold mb-0"><i class="fas fa-user-circle me-2" style="color: var(--serene-primary);"></i>Quién reporta</h3>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Nombre completo *</label>
+                            <input type="text" class="form-control" id="reporterName" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Parentesco *</label>
+                            <select class="form-select" id="reporterRelation" required>
+                                <option value="" selected disabled>Selecciona</option>
+                                <option>Madre / Padre</option>
+                                <option>Hermano/a</option>
+                                <option>Hijo/a</option>
+                                <option>Cónyuge</option>
+                                <option>Tutor legal</option>
+                                <option>Otro familiar</option>
+                                <option>Amigo/a</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Teléfono *</label>
+                            <input type="tel" class="form-control" id="reporterPhone" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Correo electrónico</label>
+                            <input type="email" class="form-control" id="reporterEmail">
+                        </div>
+
+                        <!-- Datos de la persona desaparecida -->
+                        <h3 class="h5 fw-bold mt-3 mb-0"><i class="fas fa-user-large me-2" style="color: var(--serene-primary);"></i>Persona desaparecida</h3>
+                        <div class="col-md-7">
+                            <label class="form-label fw-semibold">Nombre completo *</label>
+                            <input type="text" class="form-control" id="missingName" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold">Edad *</label>
+                            <input type="number" class="form-control" id="missingAge" min="0" max="120" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label fw-semibold">Género *</label>
+                            <select class="form-select" id="missingGender" required>
+                                <option>Mujer</option>
+                                <option>Hombre</option>
+                                <option>Otro</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Fecha de desaparición *</label>
+                            <input type="date" class="form-control" id="disappearanceDate" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Hora aproximada *</label>
+                            <input type="time" class="form-control" id="disappearanceTime" required>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">Lugar de desaparición *</label>
+                            <input type="text" class="form-control" id="disappearancePlace" placeholder="Calle, colonia, municipio, referencias" required>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">Vestimenta al momento</label>
+                            <textarea class="form-control" id="lastClothing" rows="2" placeholder="ropa, calzado, accesorios..."></textarea>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">Características físicas y señas particulares *</label>
+                            <textarea class="form-control" id="physicalFeatures" rows="2" placeholder="estatura, complexión, tatuajes, cicatrices, lunares..." required></textarea>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">Contexto de la desaparición *</label>
+                            <textarea class="form-control" id="disappearanceContext" rows="3" placeholder="¿Con quién estaba? ¿Qué hacía? ¿Hubo testigos?" required></textarea>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">Información adicional relevante</label>
+                            <textarea class="form-control" id="additionalInfo" rows="2" placeholder="enfermedades, medicamentos, posibles destinos..."></textarea>
+                        </div>
+                        <div class="col-12 d-flex justify-content-between mt-4">
+                            <button type="button" id="generateDocsBtn" class="btn btn-primary px-5 py-3"><i class="fas fa-file-pdf me-2"></i>Generar documentos legales</button>
+                            <button type="button" id="clearFormBtn" class="btn btn-neutral px-5"><i class="fas fa-eraser me-2"></i>Limpiar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="colectivo-card">
+                    <i class="fas fa-scale-balanced fs-1 mb-3" style="color: var(--serene-primary);"></i>
+                    <h3 class="h4 fw-bold">Fundamento jurídico</h3>
+                    <p class="text-secondary">Su denuncia no puede ser rechazada ni postergada.</p>
+                    <div class="law-quote mt-4">
+                        <p class="mb-2 fw-bold">Artículo 119 — Ley General:</p>
+                        <p class="small">"Las autoridades deberán iniciar de inmediato la búsqueda y localización de personas desaparecidas, sin que pueda condicionarse a la espera de ningún plazo..."</p>
+                    </div>
+                    <hr class="my-4">
+                    <p class="small text-secondary"><i class="fas fa-info-circle me-1"></i> Los documentos generados incluyen una solicitud de amparo indirecto en caso de omisión.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======= SECCIÓN EXCLUSIVA PARA COLECTIVOS ======= -->
+    <section id="colectivos" class="py-5 mt-5">
+        <div class="row mb-5">
+            <div class="col-lg-6">
+                <h2 class="section-title h1 fw-semibold"><i class="fas fa-people-arrows me-3" style="color: var(--serene-primary);"></i>Espacio para colectivos</h2>
+                <p class="fs-5 text-secondary">Herramientas, redes y apoyo jurídico para organizaciones de familiares y buscadores.</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 p-4 text-center border-0 shadow-sm">
+                    <div class="d-flex justify-content-center mb-3">
+                        <span class="bg-light p-3 rounded-circle"><i class="fas fa-map-location-dot fs-2" style="color: var(--serene-primary);"></i></span>
+                    </div>
+                    <h3 class="h5 fw-bold">Directorio activo</h3>
+                    <p class="small text-secondary">Consulta colectivos de búsqueda en Jalisco y occidente. Acceso a contactos directos.</p>
+                    <button class="btn btn-neutral w-100 mt-2" data-bs-toggle="modal" data-bs-target="#directorioModal">Ver colectivos</button>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 p-4 text-center border-0 shadow-sm">
+                    <div class="d-flex justify-content-center mb-3">
+                        <span class="bg-light p-3 rounded-circle"><i class="fas fa-chalkboard-user fs-2" style="color: var(--serene-primary);"></i></span>
+                    </div>
+                    <h3 class="h5 fw-bold">Guías jurídicas</h3>
+                    <p class="small text-secondary">Protocolos, reformas y argumentación legal para litigio estratégico en desaparición.</p>
+                    <button class="btn btn-neutral w-100 mt-2" data-bs-toggle="modal" data-bs-target="#guiasModal">Descargar PDF</button>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 p-4 text-center border-0 shadow-sm">
+                    <div class="d-flex justify-content-center mb-3">
+                        <span class="bg-light p-3 rounded-circle"><i class="fas fa-hand-holding-hand fs-2" style="color: var(--serene-primary);"></i></span>
+                    </div>
+                    <h3 class="h5 fw-bold">Acompañamiento</h3>
+                    <p class="small text-secondary">Vinculación con abogadas/os especializadas en amparo y litigio ante la CIDH.</p>
+                    <button class="btn btn-neutral w-100 mt-2">Solicitar apoyo</button>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 p-4 text-center border-0 shadow-sm">
+                    <div class="d-flex justify-content-center mb-3">
+                        <span class="bg-light p-3 rounded-circle"><i class="fas fa-plus-circle fs-2" style="color: var(--serene-primary);"></i></span>
+                    </div>
+                    <h3 class="h5 fw-bold">Registra tu colectivo</h3>
+                    <p class="small text-secondary">Súmate a SoyColectivo para visibilizar tu labor y acceder a herramientas gratuitas.</p>
+                    <button class="btn btn-primary w-100 mt-2" data-bs-toggle="modal" data-bs-target="#registroColectivoModal">Registrar ahora</button>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="law-quote p-4 d-flex flex-wrap align-items-center justify-content-between">
+                    <div>
+                        <i class="fas fa-quote-left fs-1 me-2" style="color: var(--serene-primary);"></i>
+                        <span class="fs-6 fw-medium">El Protocolo Homologado de Búsqueda faculta a los colectivos para coadyuvar en tareas de localización y tener acceso a carpetas de investigación.</span>
+                    </div>
+                    <span class="badge-sereno mt-2 mt-lg-0"><i class="fas fa-book-open me-1"></i> Protocolo, art. 42</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======= RECURSOS LEGALES CON JURISPRUDENCIA (ENFOQUE REDES SOCIALES) ======= -->
+    <section id="recursos" class="py-5">
+        <h2 class="section-title h2 fw-semibold"><i class="fas fa-gavel me-3" style="color: var(--serene-primary);"></i>Recursos legales / Jalisco</h2>
+        
+        <!-- JURISPRUDENCIA DESTACADA -->
+        <div class="jurisprudencia-card mb-5">
+            <div class="d-flex align-items-start gap-4">
+                <div>
+                    <span class="badge-sereno mb-3">JURISPRUDENCIA OBLIGATORIA 2024</span>
+                    <h3 class="h4 fw-bold" style="color: var(--serene-primary);">1a./J. 14/2024 (11a.)</h3>
+                    <p class="fw-semibold">EJERCICIO DEL DERECHO DE PETICIÓN. UNA VEZ QUE LA AUTORIDAD ACEPTA QUE HA RECIBIDO UNA PETICIÓN, QUEDA OBLIGADA A DICTAR ACUERDO SOBRE ÉSTA.</p>
+                    <div class="bg-white p-3 rounded-3 mt-2" style="border-left: 6px solid var(--serene-secondary);">
+                        <p class="mb-0"><strong>📱 ¿Qué significa esto para ti?</strong><br>
+                        <i class="fas fa-check-circle me-1" style="color: var(--serene-primary);"></i> 
+                        <strong>Puedes hacer tu denuncia por redes sociales</strong>. Un mensaje por Facebook, Twitter, WhatsApp o cualquier red oficial de la Fiscalía o Comisión de Búsqueda <span class="fw-bold">es una petición formal</span>. La autoridad está obligada a responderte y a actuar. No pueden ignorar tu mensaje ni decir que "no es un escrito oficial". ¡Guarda capturas de pantalla como prueba!</p>
+                    </div>
+                    <p class="small text-secondary mt-3 mb-0"><em>Gaceta del Semanario Judicial de la Federación. Libro 33, Enero de 2024, Tomo II, página 1789.</em></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 mt-3">
+            <div class="col-md-4">
+                <div class="d-flex gap-3">
+                    <i class="fas fa-file-pdf fs-2" style="color: var(--serene-primary);"></i>
+                    <div>
+                        <h4 class="h6 fw-bold">Ley General de Desaparición</h4>
+                        <p class="small text-secondary">Texto vigente, artículos clave para la búsqueda inmediata.</p>
+                        <a href="#" class="small fw-bold" style="color: var(--serene-primary);">Consultar <i class="fas fa-arrow-right ms-1"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="d-flex gap-3">
+                    <i class="fas fa-clipboard-list fs-2" style="color: var(--serene-primary);"></i>
+                    <div>
+                        <h4 class="h6 fw-bold">Protocolo Homologado</h4>
+                        <p class="small text-secondary">Edición 2024. Actuación en primeras 24 horas.</p>
+                        <a href="#" class="small fw-bold" style="color: var(--serene-primary);">Descargar</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="d-flex gap-3">
+                    <i class="fas fa-balance-scale fs-2" style="color: var(--serene-primary);"></i>
+                    <div>
+                        <h4 class="h6 fw-bold">Comisión de Búsqueda Jalisco</h4>
+                        <p class="small text-secondary">Oficinas, contacto y formatos oficiales.</p>
+                        <a href="#" class="small fw-bold" style="color: var(--serene-primary);">Ver ficha</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- ======= FOOTER CON LOGO Y JURISPRUDENCIA ======= -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5 mb-4 mb-lg-0">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="logo-mb" style="margin-right: 1rem;">
+                        <div class="primera-linea">Ponce en la</div>
+                        <div class="segunda-linea">¿QUIÉN SABE QUÉ HAY AQUÍ?</div>
+                        <div class="tercera-linea">¿DÓNDE ESTÁN?</div>
+                    </div>
+                    <span class="fw-bold fs-4">SoyColectivo</span>
+                </div>
+                <p class="small" style="max-width: 350px;">Herramienta cívica y jurídica desarrollada con colectivos de búsqueda de personas desaparecidas en México. No sustituye asesoría legal particular.</p>
+                <div class="mt-3 p-2" style="background-color: var(--serene-soft); border-left: 6px solid var(--serene-primary);">
+                    <p class="small fw-bold mb-1"><i class="fas fa-gavel me-1" style="color: var(--serene-primary);"></i> Jurisprudencia clave: 1a./J. 14/2024</p>
+                    <p class="small text-secondary mb-0">📱 Tu mensaje por Facebook, Twitter o WhatsApp es una denuncia formal. La autoridad debe responderte y actuar de inmediato.</p>
+                </div>
+                <p class="small text-secondary mt-3">© 2025 SoyColectivo · Basado en Ley General y Protocolos Homologados.</p>
+            </div>
+            <div class="col-lg-2 col-md-4 mb-3">
+                <h5>Familias</h5>
+                <ul class="list-unstyled small">
+                    <li class="mb-2"><a href="#herramienta-familias">Generar denuncia</a></li>
+                    <li class="mb-2"><a href="#">Preguntas frecuentes</a></li>
+                    <li class="mb-2"><a href="#">Derechos de las víctimas</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-2 col-md-4 mb-3">
+                <h5>Colectivos</h5>
+                <ul class="list-unstyled small">
+                    <li class="mb-2"><a href="#colectivos">Directorio</a></li>
+                    <li class="mb-2"><a href="#">Guías de incidencia</a></li>
+                    <li class="mb-2"><a href="#">Registro</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-3 col-md-4 mb-3">
+                <h5>Contactos urgentes</h5>
+                <ul class="list-unstyled small">
+                    <li class="mb-3">
+                        <i class="fas fa-building me-2" style="color: var(--serene-primary);"></i><strong>Fiscalía Especializada Personas Desaparecidas</strong><br>
+                        <a href="https://fiscaliaenpersonasdesaparecidas.jalisco.gob.mx/" target="_blank" class="text-decoration-none small">
+                            fiscaliaenpersonasdesaparecidas.jalisco.gob.mx
+                        </a><br>
+                        <i class="fas fa-phone me-1"></i> 33 3030 5500
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-gavel me-2" style="color: var(--serene-primary);"></i><strong>CEDHJ</strong><br>
+                        C. Pedro Moreno 1616, Col Americana, 44600 Guadalajara, Jal.<br>
+                        <i class="fas fa-phone me-1"></i> 33 3669 1100 <span class="badge" style="background-color: var(--serene-soft); color: var(--neutral-700);">24/7</span><br>
+                        <i class="fas fa-envelope me-1"></i> <a href="mailto:cedhjalisco@cedhj.org.mx">cedhjalisco@cedhj.org.mx</a><br>
+                        <i class="fas fa-clock me-1"></i> 24/7, 365 días<br>
+                        <a href="http://www.cedhj.org.mx/" target="_blank" class="text-decoration-none small">www.cedhj.org.mx</a>
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-phone me-2"></i> Línea nacional: <strong>911</strong>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- ======= MODALES ======= -->
+<!-- Modal: Vista previa de documentos -->
+<div class="modal fade" id="documentModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content p-4">
+            <div class="modal-header border-0 pb-0">
+                <h4 class="modal-title fw-bold"><i class="fas fa-file-contract me-2" style="color: var(--serene-primary);"></i>Documentos generados</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="preview-area" id="documentPreview"></div>
+                <div class="alert mt-4 small border-0" style="background-color: var(--serene-soft);">
+                    <i class="fas fa-info-circle me-2" style="color: var(--serene-primary);"></i> Incluye denuncia inicial, fundamentación legal, jurisprudencia con enfoque en redes sociales y escrito de amparo indirecto.
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <button id="printDocsBtn" class="btn btn-primary"><i class="fas fa-print me-2"></i>Imprimir</button>
+                <button id="downloadPdfBtn" class="btn btn-secondary"><i class="fas fa-download me-2"></i>Descargar PDF</button>
+                <button type="button" class="btn btn-neutral" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Directorio de colectivos -->
+<div class="modal fade" id="directorioModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content p-4">
+            <div class="modal-header border-0">
+                <h5 class="modal-title fw-bold"><i class="fas fa-map-location-dot me-2" style="color: var(--serene-primary);"></i> Colectivos de búsqueda en Jalisco</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="list-group">
+                    <div class="list-group-item border-0 d-flex justify-content-between align-items-center">
+                        <div><strong>Colectivo Luz de Esperanza</strong><br><small class="text-secondary">Guadalajara, ZMG</small></div>
+                        <span class="badge" style="background-color: var(--serene-soft); color: var(--neutral-700);">33 1234 5678</span>
+                    </div>
+                    <div class="list-group-item border-0 d-flex justify-content-between align-items-center">
+                        <div><strong>Buscadoras por la Paz</strong><br><small class="text-secondary">Puerto Vallarta</small></div>
+                        <span class="badge" style="background-color: var(--serene-soft); color: var(--neutral-700);">322 987 6543</span>
+                    </div>
+                    <div class="list-group-item border-0 d-flex justify-content-between align-items-center">
+                        <div><strong>Red de Madres Jalisco</strong><br><small class="text-secondary">Tlaquepaque</small></div>
+                        <span class="badge" style="background-color: var(--serene-soft); color: var(--neutral-700);">33 5555 1212</span>
+                    </div>
+                    <div class="list-group-item border-0 d-flex justify-content-between align-items-center">
+                        <div><strong>Colectivo Familias Unidas</strong><br><small class="text-secondary">Ciudad Guzmán</small></div>
+                        <span class="badge" style="background-color: var(--serene-soft); color: var(--neutral-700);">341 456 7890</span>
+                    </div>
+                </div>
+                <p class="small text-secondary mt-4"><i class="fas fa-circle-plus me-1" style="color: var(--serene-primary);"></i> ¿Perteneces a un colectivo y no apareces? <a href="#" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#registroColectivoModal" style="color: var(--serene-primary);">Regístralo aquí</a>.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Registro de colectivo -->
+<div class="modal fade" id="registroColectivoModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content p-4">
+            <div class="modal-header border-0">
+                <h5 class="modal-title fw-bold"><i class="fas fa-plus-circle me-2" style="color: var(--serene-primary);"></i> Registro de colectivo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="colectivoForm">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Nombre del colectivo</label>
+                        <input type="text" class="form-control" placeholder="Ej. Buscadoras Jalisco">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Municipio / región</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Correo de contacto</label>
+                        <input type="email" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Teléfono público</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Enviar registro</button>
+                </form>
+                <p class="small text-secondary mt-3">Tu colectivo aparecerá en el directorio después de una verificación.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Guías jurídicas -->
+<div class="modal fade" id="guiasModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content p-4">
+            <div class="modal-header border-0">
+                <h5 class="modal-title fw-bold"><i class="fas fa-chalkboard-user me-2" style="color: var(--serene-primary);"></i> Guías jurídicas para colectivos</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="list-unstyled">
+                    <li class="mb-3"><i class="fas fa-file-pdf me-2" style="color: var(--serene-primary);"></i> Protocolo Homologado comentado (PDF, 2.4 MB)</li>
+                    <li class="mb-3"><i class="fas fa-file-pdf me-2" style="color: var(--serene-primary);"></i> Argumentario para amparo en desaparición (PDF, 1.1 MB)</li>
+                    <li class="mb-3"><i class="fas fa-file-pdf me-2" style="color: var(--serene-primary);"></i> Guía rápida: primeros pasos legales (PDF, 0.8 MB)</li>
+                </ul>
+                <button class="btn btn-primary w-100">Descargar todo (ZIP)</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('disappearanceDate').value = today;
+        const now = new Date();
+        const hours = now.getHours().toString().padStart(2,'0');
+        const minutes = now.getMinutes().toString().padStart(2,'0');
+        document.getElementById('disappearanceTime').value = `${hours}:${minutes}`;
+
+        document.getElementById('generateDocsBtn').addEventListener('click', generateDocuments);
+        document.getElementById('clearFormBtn').addEventListener('click', clearForm);
+        document.getElementById('printDocsBtn').addEventListener('click', printDocuments);
+        document.getElementById('downloadPdfBtn').addEventListener('click', downloadAsPDF);
+    });
+
+    function getFormData() {
+        return {
+            reporterName: document.getElementById('reporterName').value,
+            reporterRelation: document.getElementById('reporterRelation').value,
+            reporterPhone: document.getElementById('reporterPhone').value,
+            reporterEmail: document.getElementById('reporterEmail').value,
+            missingName: document.getElementById('missingName').value,
+            missingAge: document.getElementById('missingAge').value,
+            missingGender: document.getElementById('missingGender').value,
+            disappearanceDate: formatDate(document.getElementById('disappearanceDate').value),
+            disappearanceTime: document.getElementById('disappearanceTime').value,
+            disappearancePlace: document.getElementById('disappearancePlace').value,
+            lastClothing: document.getElementById('lastClothing').value,
+            physicalFeatures: document.getElementById('physicalFeatures').value,
+            disappearanceContext: document.getElementById('disappearanceContext').value,
+            additionalInfo: document.getElementById('additionalInfo').value
+        };
+    }
+
+    function formatDate(dateStr) {
+        const d = new Date(dateStr);
+        return d.toLocaleDateString('es-MX', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+    }
+
+    function validateForm() {
+        const required = ['reporterName','reporterRelation','reporterPhone','missingName','missingAge','missingGender','disappearanceDate','disappearanceTime','disappearancePlace','physicalFeatures','disappearanceContext'];
+        for(let id of required) {
+            if(!document.getElementById(id).value.trim()) {
+                alert('Por favor complete todos los campos obligatorios.');
+                document.getElementById(id).focus();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function generateDocuments() {
+        if(!validateForm()) return;
+        const data = getFormData();
+        const content = createDocumentContent(data);
+        document.getElementById('documentPreview').innerText = content;
+        window.currentDocContent = content;
+        const modal = new bootstrap.Modal(document.getElementById('documentModal'));
+        modal.show();
+    }
+
+    function createDocumentContent(d) {
+        const currentDate = new Date().toLocaleDateString('es-MX', { year:'numeric', month:'long', day:'numeric' });
+        return `DENUNCIA POR DESAPARICIÓN Y SOLICITUD DE ACCIÓN INMEDIATA
+SoyColectivo - Herramienta de Primeras Horas
+
+FECHA: ${currentDate}
+HORA: ${new Date().toLocaleTimeString('es-MX')}
+
+I. DATOS DEL DENUNCIANTE
+Nombre: ${d.reporterName}
+Parentesco: ${d.reporterRelation}
+Teléfono: ${d.reporterPhone}
+Correo: ${d.reporterEmail || 'No proporcionado'}
+
+II. DATOS DE LA PERSONA DESAPARECIDA
+Nombre: ${d.missingName}
+Edad: ${d.missingAge} años · Género: ${d.missingGender}
+Desaparición: ${d.disappearanceDate} a las ${d.disappearanceTime}
+Lugar: ${d.disappearancePlace}
+Vestimenta: ${d.lastClothing || 'No especificada'}
+Señas particulares: ${d.physicalFeatures}
+Contexto: ${d.disappearanceContext}
+Información adicional: ${d.additionalInfo || 'No proporcionada'}
+
+III. FUNDAMENTACIÓN LEGAL
+- Artículo 119, Ley General en Materia de Desaparición: búsqueda inmediata, sin condicionarse a plazo.
+- Artículo 54: debida diligencia.
+- Protocolo Homologado de Búsqueda: acciones dentro de las primeras 24 horas.
+- Constitución Mexicana, arts. 1° y 14.
+- **Jurisprudencia 1a./J. 14/2024 (11a.)**: 
+   "EJERCICIO DEL DERECHO DE PETICIÓN. UNA VEZ QUE LA AUTORIDAD ACEPTA QUE HA RECIBIDO UNA PETICIÓN, QUEDA OBLIGADA A DICTAR ACUERDO SOBRE ÉSTA."
+   📱 APLICA A REDES SOCIALES: Un mensaje enviado por Facebook, Twitter, WhatsApp o cualquier red oficial de la Fiscalía o Comisión de Búsqueda es una petición formal. La autoridad está obligada a responder y actuar. Guarda capturas de pantalla.
+
+IV. PETICIONES
+1. Inicio inmediato de búsqueda, sin espera de 72 horas.
+2. Activación de protocolos de búsqueda y localización.
+3. Asignación de carpeta de investigación.
+4. Medidas de atención psicosocial a la familia.
+
+V. AMPARO INDIRECTO (PREVENTIVO)
+Se solicita amparo contra cualquier omisión o retraso de las autoridades, con fundamento en los artículos 103 y 107 constitucionales y en la jurisprudencia citada.
+
+Atentamente,
+
+${d.reporterName}
+${d.reporterPhone}
+
+--- Documento generado por SoyColectivo con base en legislación vigente en Jalisco y México. ---
+
+============================================
+CONTACTOS DE AUTORIDADES (ACTUALIZADOS 2025)
+============================================
+Fiscalía Especializada en Personas Desaparecidas de Jalisco:
+• Sitio web: https://fiscaliaenpersonasdesaparecidas.jalisco.gob.mx/
+• Teléfono: 33 3030 5500
+• Dirección: Av. Alcalde 1350, Colonia Miraflores, Guadalajara, Jal.
+
+Comisión Estatal de Derechos Humanos de Jalisco (CEDHJ):
+• Dirección: C. Pedro Moreno 1616, Col Americana, 44600 Guadalajara, Jal.
+• Teléfono 24/7: 33 3669 1100
+• Correo: cedhjalisco@cedhj.org.mx
+• Horario: 24/7, 365 días del año
+• Sitio web: http://www.cedhj.org.mx/
+
+Emergencias: 911`;
+    }
+
+    function clearForm() {
+        if(confirm('¿Limpiar todos los datos del formulario?')) {
+            document.getElementById('disappearanceForm').reset();
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('disappearanceDate').value = today;
+            const now = new Date();
+            document.getElementById('disappearanceTime').value = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+        }
+    }
+
+    function printDocuments() {
+        if(!window.currentDocContent) return;
+        const win = window.open('', '_blank');
+        win.document.write(`
+            <html><head><title>SoyColectivo - Documento legal</title>
+            <style>
+                body { font-family: 'Inter', sans-serif; padding: 2rem; line-height: 1.6; background-color: #faf9f7; color: #2e2a27; }
+                pre { white-space: pre-wrap; font-family: 'Courier New', monospace; }
+                .contact-block { background-color: #e8eae6; padding: 1.5rem; border-left: 6px solid #2c6e49; margin: 20px 0; border-radius: 12px; }
+                .jurisprudencia { background-color: #f4f1e9; padding: 1.2rem; border-radius: 12px; border: 2px dashed #4c9a8c; }
+                button { background-color: #2c6e49; color: white; border: none; padding: 12px 24px; border-radius: 40px; font-weight: bold; cursor: pointer; }
+            </style>
+            </head><body>
+            <pre>${window.currentDocContent}</pre>
+            <div class="contact-block">
+                <p><strong>Fiscalía Especializada en Personas Desaparecidas de Jalisco:</strong><br>
+                📍 Av. Alcalde 1350, Colonia Miraflores, Guadalajara, Jal.<br>
+                📞 33 3030 5500<br>
+                🌐 <a href="https://fiscaliaenpersonasdesaparecidas.jalisco.gob.mx/" target="_blank">fiscaliaenpersonasdesaparecidas.jalisco.gob.mx</a></p>
+                <p><strong>Comisión Estatal de Derechos Humanos de Jalisco (CEDHJ):</strong><br>
+                📍 C. Pedro Moreno 1616, Col Americana, 44600 Guadalajara, Jal.<br>
+                📞 33 3669 1100 (24/7)<br>
+                📧 cedhjalisco@cedhj.org.mx<br>
+                🕒 24/7, 365 días<br>
+                🌐 <a href="http://www.cedhj.org.mx/" target="_blank">www.cedhj.org.mx</a></p>
+                <p><strong>Emergencia nacional: 911</strong></p>
+            </div>
+            <div class="jurisprudencia">
+                <p><strong>⚖️ Jurisprudencia aplicable: 1a./J. 14/2024 (11a.)</strong><br>
+                📱 <strong>¿Sabías que tu denuncia por redes sociales es legal?</strong> La Suprema Corte ordena que toda autoridad que reciba un mensaje en Facebook, Twitter, WhatsApp o cualquier red oficial debe responder y actuar de inmediato. Guarda siempre capturas de pantalla.</p>
+            </div>
+            <p style='margin-top:30px;'><button onclick='window.print()'>Imprimir documento</button></p>
+            </body></html>
+        `);
+        win.document.close();
+    }
+
+    function downloadAsPDF() {
+        alert('Simulación: utilice "Imprimir" y guarde como PDF. En una versión completa se integraría jsPDF.');
+        printDocuments();
+    }
+</script>
+</body>
+</html>
